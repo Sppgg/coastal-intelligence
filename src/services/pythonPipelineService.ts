@@ -212,7 +212,7 @@ def generate_dsas_transects(baseline_shp: str, shorelines_shp: str, spacing_m: f
     return gdf_transects
 
 if __name__ == "__main__":
-    generate_dsas_transects("linea_base_maspalomas.shp", "costas_historicas_2018_2026.shp")
+    generate_dsas_transects("linea_base_maspalomas.gpkg", "costas_historicas_2018_2026.gpkg")
 `,
   },
 ];
@@ -234,17 +234,17 @@ export const INITIAL_PIPELINE_TASKS: PythonPipelineTask[] = [
   },
   {
     id: 'TASK-02',
-    name: 'Validación geométrica y topológica de Shapefiles',
+    name: 'Validación geométrica y topológica de capas vectoriales',
     step: 'VALIDACION',
     status: 'COMPLETADO',
     timestamp: '2026-11-10 07:16 UTC',
-    inputDataset: 'SHP-20261104T133236Z-1-001.zip',
+    inputDataset: 'inventario_vectorial_canarias.gpkg',
     outputDataset: 'blooms_shapes_validated.geojson',
     scriptFile: 'validate_geometries.py',
     recordsProcessed: 14,
     durationMs: 820,
     params: { fix_self_intersections: true, min_area_km2: 0.05 },
-    notes: '14 polígonos verificados con Shapely.make_valid() sin errores topológicos.',
+    notes: '14 polígonos verificados con control topológico sin errores de intersección.',
   },
   {
     id: 'TASK-03',

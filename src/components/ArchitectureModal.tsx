@@ -28,9 +28,9 @@ interface ArchitectureModalProps {
 const PIPELINE_STEPS = [
   {
     icon: Satellite,
-    title: '1. Ingesta Multi-Fuente Real (14 Shapefiles ESRI & Copernicus CDS/CMEMS)',
-    desc: 'Cartografía vectorial oficial de floraciones reales en Canarias (Tenerife, La Palma, La Gomera), Copernicus Marine CMEMS Ocean Physics (0.494m), CMEMS Biogeochemistry (Hierro fe a 0.506m), Reanálisis ERA5 de Viento a 10m y CAMS EAC4 (Polvo sahariano y PM10).',
-    badge: 'Real Shapes & APIs',
+    title: '1. Ingesta Multi-Fuente Geoespacial (Cartografía Vectorial Oficial & Copernicus)',
+    desc: 'Cartografía vectorial oficial de floraciones en Canarias (Tenerife, La Palma, La Gomera), Copernicus Marine CMEMS Ocean Physics (0.494m), CMEMS Biogeochemistry (Hierro fe a 0.506m), Reanálisis ERA5 de Viento a 10m y CAMS EAC4 (Polvo sahariano y PM10).',
+    badge: 'Cartografía & Copernicus',
     color: 'border-cyan-500/60 bg-cyan-950/40 text-cyan-300',
   },
   {

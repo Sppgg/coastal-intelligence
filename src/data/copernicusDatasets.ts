@@ -1,6 +1,5 @@
 /**
- * Real Copernicus Marine & ECMWF Copernicus Climate Data Store (CDS) Dataset Specifications
- * Extracted directly from official Copernicus API queries in Llamadas_API_a084db25.pdf
+ * Official Copernicus Marine Service (CMEMS) and ECMWF Copernicus Climate Data Store specifications
  */
 
 export interface CopernicusDatasetSpec {

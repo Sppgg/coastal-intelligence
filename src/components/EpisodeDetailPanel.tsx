@@ -181,12 +181,12 @@ export const EpisodeDetailPanel: React.FC<EpisodeDetailPanelProps> = ({
           </div>
         </div>
 
-        {/* SECCIÓN 1: VARIABLES REALES COPERNICUS (PDF) */}
+        {/* SECCIÓN 1: VARIABLES COPERNICUS */}
         <div>
           <div className="flex items-center justify-between mb-2">
             <h3 className="font-mono text-[11px] font-bold uppercase tracking-wider text-cyan-300 flex items-center gap-1.5">
               <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-              <span>Variables Reales Copernicus (PDF)</span>
+              <span>Variables Oceanográficas & Atmosféricas</span>
             </h3>
             <span className="text-[9px] px-1.5 py-0.5 rounded bg-cyan-950 text-cyan-400 font-mono border border-cyan-800/60">
               CMEMS &middot; CAMS &middot; ERA5
@@ -304,10 +304,10 @@ export const EpisodeDetailPanel: React.FC<EpisodeDetailPanelProps> = ({
                 <div className="flex items-center justify-between text-[10px]">
                   <span className="text-cyan-300 font-mono font-bold flex items-center gap-1">
                     <FlaskConical className="w-3 h-3 text-cyan-400" />
-                    Shapefile: {episode.shpFile}
+                    Capa Vectorial: {episode.shpFile.replace(/\.shp$/i, '')}
                   </span>
                   <span className="px-1.5 py-0.5 rounded bg-cyan-900/80 text-cyan-200 font-mono text-[9px] border border-cyan-700">
-                    SHAPEFILE REAL
+                    CARTOGRAFÍA OFICIAL
                   </span>
                 </div>
                 <div className="grid grid-cols-2 text-[9.5px] text-slate-300 font-mono">

@@ -1,7 +1,7 @@
 import { CoastalEpisode } from '../types';
 
 /**
- * Episodios basados exclusivamente en los 14 Shapefiles reales de microalgas (2017 y 2023)
+ * Episodios basados exclusivamente en los registros cartográficos oficiales de microalgas (2017 y 2023)
  * y en los datos reanalizados de las llamadas API Copernicus (CMEMS, ERA5, CAMS).
  */
 export const REAL_COPERNICUS_EPISODES: CoastalEpisode[] = [
@@ -40,7 +40,7 @@ export const REAL_COPERNICUS_EPISODES: CoastalEpisode[] = [
     "risk": "Moderado",
     "status": "VALIDADO",
     "groundTruthStatus": "Validado",
-    "dataSource": "Shapefile ESRI (2017-08-04.shp) + Copernicus CMEMS + ERA5 + CAMS EAC4",
+    "dataSource": "Cartografía Vectorial Oficial (Ref: 2017-08-04) + Copernicus CMEMS + ERA5 + CAMS EAC4",
     "spectralBands": "Sentinel-2 MSI B5 (705nm)/B4 (665nm) \u00b7 CMEMS PHY 0.494m \u00b7 CAMS EAC4 AOD 550nm",
     "thetao": 24.6,
     "uo": -0.18,
@@ -760,7 +760,7 @@ export const REAL_COPERNICUS_EPISODES: CoastalEpisode[] = [
     "risk": "Muy alto",
     "status": "VALIDADO",
     "groundTruthStatus": "Validado",
-    "dataSource": "Shapefile ESRI (Bloom_2017_01_LG22.shp) + Copernicus CMEMS + ERA5 + CAMS EAC4",
+    "dataSource": "Cartografía Vectorial Oficial (Ref: Bloom_2017_01_LG22) + Copernicus CMEMS + ERA5 + CAMS EAC4",
     "spectralBands": "Sentinel-2 MSI B5 (705nm)/B4 (665nm) \u00b7 CMEMS PHY 0.494m \u00b7 CAMS EAC4 AOD 550nm",
     "thetao": 25.5,
     "uo": -0.24,
@@ -1706,7 +1706,7 @@ export const REAL_COPERNICUS_EPISODES: CoastalEpisode[] = [
     "risk": "Moderado",
     "status": "VALIDADO",
     "groundTruthStatus": "Validado",
-    "dataSource": "Shapefile ESRI (Bloom_2017_01_LP06.shp) + Copernicus CMEMS + ERA5 + CAMS EAC4",
+    "dataSource": "Cartografía Vectorial Oficial (Ref: Bloom_2017_01_LP06) + Copernicus CMEMS + ERA5 + CAMS EAC4",
     "spectralBands": "Sentinel-2 MSI B5 (705nm)/B4 (665nm) \u00b7 CMEMS PHY 0.494m \u00b7 CAMS EAC4 AOD 550nm",
     "thetao": 25.1,
     "uo": -0.2,
@@ -2202,7 +2202,7 @@ export const REAL_COPERNICUS_EPISODES: CoastalEpisode[] = [
     "risk": "Moderado",
     "status": "VALIDADO",
     "groundTruthStatus": "Validado",
-    "dataSource": "Shapefile ESRI (Bloom_2017_01_LP07.shp) + Copernicus CMEMS + ERA5 + CAMS EAC4",
+    "dataSource": "Cartografía Vectorial Oficial (Ref: Bloom_2017_01_LP07) + Copernicus CMEMS + ERA5 + CAMS EAC4",
     "spectralBands": "Sentinel-2 MSI B5 (705nm)/B4 (665nm) \u00b7 CMEMS PHY 0.494m \u00b7 CAMS EAC4 AOD 550nm",
     "thetao": 25.2,
     "uo": -0.21,
@@ -2542,7 +2542,7 @@ export const REAL_COPERNICUS_EPISODES: CoastalEpisode[] = [
     "risk": "Moderado",
     "status": "VALIDADO",
     "groundTruthStatus": "Validado",
-    "dataSource": "Shapefile ESRI (Bloom_2017_01_TF06.shp) + Copernicus CMEMS + ERA5 + CAMS EAC4",
+    "dataSource": "Cartografía Vectorial Oficial (Ref: Bloom_2017_01_TF06) + Copernicus CMEMS + ERA5 + CAMS EAC4",
     "spectralBands": "Sentinel-2 MSI B5 (705nm)/B4 (665nm) \u00b7 CMEMS PHY 0.494m \u00b7 CAMS EAC4 AOD 550nm",
     "thetao": 24.9,
     "uo": -0.2,
@@ -3194,7 +3194,7 @@ export const REAL_COPERNICUS_EPISODES: CoastalEpisode[] = [
     "risk": "Muy alto",
     "status": "VALIDADO",
     "groundTruthStatus": "Validado",
-    "dataSource": "Shapefile ESRI (Bloom_2017_01_TF09.shp) + Copernicus CMEMS + ERA5 + CAMS EAC4",
+    "dataSource": "Cartografía Vectorial Oficial (Ref: Bloom_2017_01_TF09) + Copernicus CMEMS + ERA5 + CAMS EAC4",
     "spectralBands": "Sentinel-2 MSI B5 (705nm)/B4 (665nm) \u00b7 CMEMS PHY 0.494m \u00b7 CAMS EAC4 AOD 550nm",
     "thetao": 25.6,
     "uo": -0.27,
@@ -4196,7 +4196,7 @@ export const REAL_COPERNICUS_EPISODES: CoastalEpisode[] = [
     "risk": "Muy alto",
     "status": "VALIDADO",
     "groundTruthStatus": "Validado",
-    "dataSource": "Shapefile ESRI (Bloom_2017_01_TF11.shp) + Copernicus CMEMS + ERA5 + CAMS EAC4",
+    "dataSource": "Cartografía Vectorial Oficial (Ref: Bloom_2017_01_TF11) + Copernicus CMEMS + ERA5 + CAMS EAC4",
     "spectralBands": "Sentinel-2 MSI B5 (705nm)/B4 (665nm) \u00b7 CMEMS PHY 0.494m \u00b7 CAMS EAC4 AOD 550nm",
     "thetao": 25.9,
     "uo": -0.3,
@@ -4218,7 +4218,7 @@ export const REAL_COPERNICUS_EPISODES: CoastalEpisode[] = [
       "sampleId": "GT-2017-TF-011",
       "samplingDate": "2017-08-11 10:15 UTC",
       "identifiedOrganism": "Trichodesmium erythraeum (densidades r\u00e9cord superiores a 10\u2076 c\u00e9l/L)",
-      "notes": "Mayor mancha cartografiada en Canarias: 279.3 km\u00b2 con 29 pol\u00edgonos documentados en shapefile."
+      "notes": "Mayor mancha cartografiada en Canarias: 279.3 km\u00b2 con 29 pol\u00edgonos delimitados vectorialmente."
     },
     "polygonCoordinates": [
       [
@@ -6378,7 +6378,7 @@ export const REAL_COPERNICUS_EPISODES: CoastalEpisode[] = [
     "risk": "Alto",
     "status": "VALIDADO",
     "groundTruthStatus": "Validado",
-    "dataSource": "Shapefile ESRI (Bloom_2017_01_TF12.shp) + Copernicus CMEMS + ERA5 + CAMS EAC4",
+    "dataSource": "Cartografía Vectorial Oficial (Ref: Bloom_2017_01_TF12) + Copernicus CMEMS + ERA5 + CAMS EAC4",
     "spectralBands": "Sentinel-2 MSI B5 (705nm)/B4 (665nm) \u00b7 CMEMS PHY 0.494m \u00b7 CAMS EAC4 AOD 550nm",
     "thetao": 25.7,
     "uo": -0.28,
@@ -7014,7 +7014,7 @@ export const REAL_COPERNICUS_EPISODES: CoastalEpisode[] = [
     "risk": "Alto",
     "status": "VALIDADO",
     "groundTruthStatus": "Validado",
-    "dataSource": "Shapefile ESRI (Bloom_2017_01_TF13.shp) + Copernicus CMEMS + ERA5 + CAMS EAC4",
+    "dataSource": "Cartografía Vectorial Oficial (Ref: Bloom_2017_01_TF13) + Copernicus CMEMS + ERA5 + CAMS EAC4",
     "spectralBands": "Sentinel-2 MSI B5 (705nm)/B4 (665nm) \u00b7 CMEMS PHY 0.494m \u00b7 CAMS EAC4 AOD 550nm",
     "thetao": 25.5,
     "uo": -0.26,
@@ -7808,7 +7808,7 @@ export const REAL_COPERNICUS_EPISODES: CoastalEpisode[] = [
     "risk": "Alto",
     "status": "VALIDADO",
     "groundTruthStatus": "Validado",
-    "dataSource": "Shapefile ESRI (Bloom_2017_01_TF14.shp) + Copernicus CMEMS + ERA5 + CAMS EAC4",
+    "dataSource": "Cartografía Vectorial Oficial (Ref: Bloom_2017_01_TF14) + Copernicus CMEMS + ERA5 + CAMS EAC4",
     "spectralBands": "Sentinel-2 MSI B5 (705nm)/B4 (665nm) \u00b7 CMEMS PHY 0.494m \u00b7 CAMS EAC4 AOD 550nm",
     "thetao": 25.3,
     "uo": -0.22,
@@ -8482,7 +8482,7 @@ export const REAL_COPERNICUS_EPISODES: CoastalEpisode[] = [
     "risk": "Muy alto",
     "status": "VALIDADO",
     "groundTruthStatus": "Validado",
-    "dataSource": "Shapefile ESRI (Bloom_2017_02_TF07.shp) + Copernicus CMEMS + ERA5 + CAMS EAC4",
+    "dataSource": "Cartografía Vectorial Oficial (Ref: Bloom_2017_02_TF07) + Copernicus CMEMS + ERA5 + CAMS EAC4",
     "spectralBands": "Sentinel-2 MSI B5 (705nm)/B4 (665nm) \u00b7 CMEMS PHY 0.494m \u00b7 CAMS EAC4 AOD 550nm",
     "thetao": 25.4,
     "uo": -0.25,
@@ -10726,7 +10726,7 @@ export const REAL_COPERNICUS_EPISODES: CoastalEpisode[] = [
     "risk": "Moderado",
     "status": "EN INVESTIGACI\u00d3N",
     "groundTruthStatus": "En evaluación",
-    "dataSource": "Shapefile ESRI (Bloom_2023_01_LP01.shp) + Copernicus CMEMS + ERA5 + CAMS EAC4",
+    "dataSource": "Cartografía Vectorial Oficial (Ref: Bloom_2023_01_LP01) + Copernicus CMEMS + ERA5 + CAMS EAC4",
     "spectralBands": "Sentinel-2 MSI B5 (705nm)/B4 (665nm) \u00b7 CMEMS PHY 0.494m \u00b7 CAMS EAC4 AOD 550nm",
     "thetao": 24.8,
     "uo": -0.19,
@@ -11192,7 +11192,7 @@ export const REAL_COPERNICUS_EPISODES: CoastalEpisode[] = [
     "risk": "Alto",
     "status": "VALIDADO",
     "groundTruthStatus": "Validado",
-    "dataSource": "Shapefile ESRI (Bloom_2023_01_TF02.shp) + Copernicus CMEMS + ERA5 + CAMS EAC4",
+    "dataSource": "Cartografía Vectorial Oficial (Ref: Bloom_2023_01_TF02) + Copernicus CMEMS + ERA5 + CAMS EAC4",
     "spectralBands": "Sentinel-2 MSI B5 (705nm)/B4 (665nm) \u00b7 CMEMS PHY 0.494m \u00b7 CAMS EAC4 AOD 550nm",
     "thetao": 25.2,
     "uo": -0.26,
@@ -11944,7 +11944,7 @@ export const REAL_COPERNICUS_EPISODES: CoastalEpisode[] = [
     "risk": "Alto",
     "status": "VALIDADO",
     "groundTruthStatus": "Validado",
-    "dataSource": "Shapefile ESRI (Bloom_2023_01_TF03.shp) + Copernicus CMEMS + ERA5 + CAMS EAC4",
+    "dataSource": "Cartografía Vectorial Oficial (Ref: Bloom_2023_01_TF03) + Copernicus CMEMS + ERA5 + CAMS EAC4",
     "spectralBands": "Sentinel-2 MSI B5 (705nm)/B4 (665nm) \u00b7 CMEMS PHY 0.494m \u00b7 CAMS EAC4 AOD 550nm",
     "thetao": 25.1,
     "uo": -0.21,

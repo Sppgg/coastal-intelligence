@@ -73,15 +73,15 @@ export const LayersPanel: React.FC<LayersPanelProps> = ({
 
       {/* Layer Groups Container */}
       <div className="flex-1 overflow-y-auto px-4 py-3 space-y-4 text-xs">
-        {/* GROUP 1: COPERNICUS MARINE & CAMS / ERA5 (DATOS REALES DEL PDF) */}
+        {/* GROUP 1: COPERNICUS MARINE & CAMS / ERA5 */}
         <div>
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-1.5 text-[11px] font-bold text-cyan-300 uppercase tracking-wider font-mono">
               <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-              <span>Copernicus & CDS (PDF)</span>
+              <span>Copernicus Marine & Atmósfera</span>
             </div>
-            <span className="text-[9px] px-1 py-0.2 rounded bg-cyan-950 text-cyan-400 border border-cyan-800 font-mono">
-              Real API
+            <span className="text-[9px] px-1.5 py-0.5 rounded bg-cyan-950 text-cyan-300 border border-cyan-800 font-mono">
+              CMEMS / CDS
             </span>
           </div>
           <div className="space-y-1.5 pl-1">

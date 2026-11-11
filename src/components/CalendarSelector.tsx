@@ -409,9 +409,9 @@ export const CalendarSelector: React.FC<CalendarSelectorProps> = ({
             })}
           </div>
 
-          {/* Quick presets for the 3 real events in the PDF */}
+          {/* Quick presets for historical events */}
           <div className="mt-2.5 pt-2 border-t border-slate-800 space-y-1">
-            <span className="text-[10px] text-slate-400 font-mono block">Eventos Reales Copernicus (PDF):</span>
+            <span className="text-[10px] text-slate-400 font-mono block">Episodios Notables de Referencia:</span>
             <div className="flex flex-wrap gap-1">
               <button
                 onClick={handleSelectToday}

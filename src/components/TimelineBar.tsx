@@ -18,7 +18,7 @@ interface TimelineBarProps {
 }
 
 const BASE_TIMELINE_STEPS = [
-  { key: '2023-08-21', label: '21 AGO 23', desc: 'Inicio subset CMEMS PHY' },
+  { key: '2023-08-21', label: '21 AGO 23', desc: 'Inicio secuencia CMEMS PHY' },
   { key: '2023-08-22', label: '22 AGO 23', desc: 'Intrusión calima CAMS' },
   { key: '2023-08-23', label: '23 AGO 23', desc: 'Pico máximo (thetao 25.5°C)' },
   { key: '2023-08-24', label: '24 AGO 23', desc: 'Canal interinsular' },
@@ -153,7 +153,7 @@ export const TimelineBar: React.FC<TimelineBarProps> = ({
         {/* Separator to historical events */}
         <div className="h-6 w-px bg-slate-800 mx-1 hidden sm:block" />
 
-        {/* Historical Events from PDF */}
+        {/* Historical Events */}
         <div className="hidden sm:flex items-center gap-1">
           {HISTORICAL_EVENTS.map((event) => {
             const isSelected = !isRangeMode && selectedDate === event.key;

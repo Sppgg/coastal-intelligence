@@ -345,8 +345,8 @@ export const StatisticalAnalysisPanel: React.FC<StatisticalAnalysisPanelProps> =
 
         {/* Cartography & reanalysis dataset source */}
         <div className="flex items-center justify-between px-3 py-2 rounded-lg bg-slate-900 border border-slate-800 text-[10px] font-mono text-slate-400">
-          <span className="text-cyan-400 font-bold">Datos Reales Cartográficos & Reanálisis Copernicus</span>
-          <span>14 Shapefiles ESRI · CMEMS / CAMS / ERA5</span>
+          <span className="text-cyan-400 font-bold">Datos Cartográficos Oficiales & Reanálisis Copernicus</span>
+          <span>Cartografía Vectorial Oficial · CMEMS / CAMS / ERA5</span>
         </div>
 
         {/* Scientific Disclaimer required by spec */}

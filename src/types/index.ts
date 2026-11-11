@@ -34,7 +34,7 @@ export interface CoastalEpisode {
   recordsCount?: number;
   totalVertices?: number;
   bbox?: [number, number, number, number]; // [minLat, minLng, maxLat, maxLng]
-  multiPolygons?: [number, number][][]; // All real polygon rings in [lat, lng] format from ESRI Shapefiles
+  multiPolygons?: [number, number][][]; // All real polygon rings in [lat, lng] format from official vector cartography
   latitude: number;
   longitude: number;
   date: string;
@@ -81,7 +81,7 @@ export interface CoastalEpisode {
   copernicusDatasetId: string; // e.g. "cmems_mod_glo_phy_my_0.083deg_P1D-m"
   era5DatasetId: string; // "reanalysis-era5-single-levels"
   camsDatasetId: string; // "cams-global-reanalysis-eac4"
-  apiPythonSnippet?: string; // Reproducible Python script from PDF
+  apiPythonSnippet?: string; // Query specification
   polygonCoordinates: [number, number][]; // [lat, lng] vertices forming the anomaly shape
   trajectory: TrajectoryPoint[];
   uncertaintyEnvelope: [number, number][]; // [lat, lng] polygon for prediction uncertainty
@@ -92,7 +92,7 @@ export interface LayerSettings {
   // Satélite óptico
   sentinel2: boolean;
   sentinel3: boolean;
-  // Copernicus Marine & CAMS / ERA5 (Datos reales del PDF)
+  // Copernicus Marine & CAMS / ERA5
   copernicusSst: boolean; // thetao
   copernicusCurrents: boolean; // uo, vo
   copernicusIron: boolean; // fe
@@ -402,7 +402,7 @@ export interface DatasetSourceItem {
   crs: string; // e.g. "EPSG:4326 (WGS84)" o "EPSG:32628 (UTM 28N)"
   spatialResolution: string; // e.g. "10 m", "2 cm", "0.083°"
   temporalCoverage: string;
-  format: 'GeoJSON' | 'Shapefile (.shp)' | 'NetCDF' | 'GeoTIFF' | 'CSV / Tabular';
+  format: 'GeoJSON' | 'Vectorial / GeoPackage' | 'NetCDF' | 'GeoTIFF' | 'CSV / Tabular' | 'GeoPackage';
   license: string;
   version: string;
   validationStatus: 'Oficial' | 'Científico Verificado' | 'En Validación' | 'Datos Demostración';

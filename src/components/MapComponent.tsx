@@ -323,43 +323,43 @@ export const MapComponent: React.FC<MapComponentProps> = ({
     }
 
     if (type === 'satellite') {
-      // Esri World Imagery (Alta resolución satelital) - 100% libre sin API key
+      // Esri World Imagery (Alta resolución satelital)
       tileLayerRef.current = L.tileLayer(
         'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
         { maxZoom: 18, attribution: 'Esri, Maxar, Earthstar Geographics' }
       ).addTo(map);
 
-      // Esri Boundaries and Places en superposición para navegación de toponimia costera (100% libre sin API key)
+      // Esri Boundaries and Places en superposición para toponimia costera
       labelsLayerRef.current = L.tileLayer(
         'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
         { maxZoom: 18, attribution: 'Esri Reference' }
       ).addTo(map);
     } else if (type === 'pnoa') {
-      // IGN España / GRAFCAN - Plan Nacional de Ortofotografía Aérea (PNOA Máxima Resolución 25cm/px Canarias) - 100% libre sin clave
+      // IGN España / GRAFCAN - Plan Nacional de Ortofotografía Aérea (PNOA Máxima Resolución 25cm/px Canarias)
       tileLayerRef.current = L.tileLayer(
         'https://www.ign.es/wmts/pnoa-ma?request=GetTile&service=WMTS&version=1.0.0&layer=OI.OrthoimageCoverage&style=default&format=image/jpeg&TileMatrixSet=GoogleMapsCompatible&TileMatrix={z}&TileRow={y}&TileCol={x}',
         { maxZoom: 19, attribution: '© IGN España - PNOA / IDE Canarias' }
       ).addTo(map);
 
-      // Esri Reference Labels libres sin clave
+      // Esri Reference Labels
       labelsLayerRef.current = L.tileLayer(
         'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
         { maxZoom: 19, attribution: 'Esri Reference' }
       ).addTo(map);
     } else if (type === 'nautical') {
-      // Esri World Ocean Base - Cartografía oceanográfica oficial con batimetría y fondo marino (100% libre sin API key)
+      // Esri World Ocean Base - Cartografía oceanográfica oficial con batimetría y relieve submarino
       tileLayerRef.current = L.tileLayer(
         'https://server.arcgisonline.com/ArcGIS/rest/services/Ocean/World_Ocean_Base/MapServer/tile/{z}/{y}/{x}',
         { maxZoom: 16, attribution: 'Esri, GEBCO, NOAA, National Geographic' }
       ).addTo(map);
 
-      // Esri Ocean Reference (batimetría, fosas marinas y nombres oceánicos)
+      // Esri Ocean Reference (batimetría y toponimia marina)
       labelsLayerRef.current = L.tileLayer(
         'https://server.arcgisonline.com/ArcGIS/rest/services/Ocean/World_Ocean_Reference/MapServer/tile/{z}/{y}/{x}',
         { maxZoom: 16 }
       ).addTo(map);
     } else if (type === 'dark') {
-      // Esri Dark Gray Canvas Base - Modo oceanográfico nocturno (100% libre sin API key)
+      // Esri Dark Gray Canvas Base - Modo oceanográfico nocturno
       tileLayerRef.current = L.tileLayer(
         'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}',
         { maxZoom: 16, attribution: 'Esri, HERE, Garmin, OpenStreetMap' }
@@ -371,7 +371,7 @@ export const MapComponent: React.FC<MapComponentProps> = ({
         { maxZoom: 16 }
       ).addTo(map);
     } else if (type === 'osm') {
-      // OpenStreetMap Standard - 100% libre sin API key
+      // OpenStreetMap Standard
       tileLayerRef.current = L.tileLayer(
         'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
         { maxZoom: 19, attribution: '© OpenStreetMap contributors' }
@@ -384,10 +384,9 @@ export const MapComponent: React.FC<MapComponentProps> = ({
           { tileSize: 512, zoomOffset: -1, maxZoom: 20, attribution: '© Mapbox © OpenStreetMap' }
         ).addTo(map);
       } else {
-        // Fallback robusto a Esri World Imagery (abierto) para evitar fallos de renderizado
         tileLayerRef.current = L.tileLayer(
           'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-          { maxZoom: 18, attribution: 'Esri World Imagery (Activo: Mapbox token no configurado en entorno)' }
+          { maxZoom: 18, attribution: 'Esri World Imagery' }
         ).addTo(map);
         labelsLayerRef.current = L.tileLayer(
           'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
@@ -397,17 +396,14 @@ export const MapComponent: React.FC<MapComponentProps> = ({
     } else if (type === 'maptiler') {
       const key = getMaptilerKey();
       if (key) {
-        // Solo solicitar MapTiler si existe una clave válida detectada en variables de entorno
         tileLayerRef.current = L.tileLayer(
           `https://api.maptiler.com/maps/hybrid/{z}/{x}/{y}.jpg?key=${key}`,
           { tileSize: 512, zoomOffset: -1, maxZoom: 20, attribution: '© MapTiler © OpenStreetMap' }
         ).addTo(map);
       } else {
-        // Fallback inmediato a Esri World Imagery: NUNCA solicitar a api.maptiler.com sin clave,
-        // ya que MapTiler devuelve imágenes con la marca de agua "API key required"
         tileLayerRef.current = L.tileLayer(
           'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-          { maxZoom: 18, attribution: 'Esri World Imagery (Activo: MapTiler key no configurada en entorno)' }
+          { maxZoom: 18, attribution: 'Esri World Imagery' }
         ).addTo(map);
         labelsLayerRef.current = L.tileLayer(
           'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
@@ -715,7 +711,7 @@ export const MapComponent: React.FC<MapComponentProps> = ({
           }
         }
 
-        // (C) Detected Anomaly Shape (ESRI Shapefile Polygons & MultiPolygons)
+        // (C) Detected Anomaly Shape (Cartografía Vectorial Oficial)
         if (layers.detectedAnomalies) {
           if (Array.isArray(ep.multiPolygons) && ep.multiPolygons.length > 0) {
             const validRings = ep.multiPolygons
@@ -745,10 +741,10 @@ export const MapComponent: React.FC<MapComponentProps> = ({
                 });
 
                 shapeLayer.bindTooltip(
-                  `<strong>${ep.id}</strong> (${ep.shpFile || 'SHP'})<br/>` +
+                  `<strong>${ep.id}</strong><br/>` +
                   `<b>${ep.name || ''}</b><br/>` +
-                  `<b>Área Shapefile:</b> ${(ep.area ?? 0).toFixed(2)} km² (${ep.recordsCount || validRings.length} partes)<br/>` +
-                  `<b>Riesgo:</b> ${ep.risk} (${((ep.modelProbability ?? 0) * 100).toFixed(0)}% prob.)<br/>` +
+                  `<b>Superficie:</b> ${(ep.area ?? 0).toFixed(2)} km² (${ep.recordsCount || validRings.length} polígonos)<br/>` +
+                  `<b>Nivel de Riesgo:</b> ${ep.risk} (${((ep.modelProbability ?? 0) * 100).toFixed(0)}% prob.)<br/>` +
                   `<b>Clorofila-a:</b> ${ep.chlorophyll ?? 0} mg/m³ · <b>NDCI:</b> ${(ep.ndci ?? 0).toFixed(2)}<br/>` +
                   `<b>Distancia a Costa:</b> ${ep.distanceToCoast ?? 0} km`,
                   { className: 'coastal-tooltip', sticky: true }
@@ -756,7 +752,7 @@ export const MapComponent: React.FC<MapComponentProps> = ({
 
                 layerGroup.addLayer(shapeLayer);
               } catch (err) {
-                console.warn('Failed to add shapefile multipolygon:', ep.id, err);
+                console.warn('Failed to add multipolygon layer:', ep.id, err);
               }
             }
           } else if (Array.isArray(ep.polygonCoordinates)) {

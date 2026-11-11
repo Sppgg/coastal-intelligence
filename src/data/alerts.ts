@@ -53,7 +53,7 @@ export const REAL_COPERNICUS_ALERTS: CoastalAlert[] = [
     description: 'Gran mancha perimetral de 115.36 km² (Bloom_2017_01_LG22) en la costa sur y suroeste gomera tras desplazamiento interinsular.',
     episodeId: 'Bloom_2017_01_LG22',
     targetCoast: 'San Sebastián - Playa Santiago - Valle Gran Rey (La Gomera)',
-    recommendedAction: 'Registro de archivo histórico validado mediante Shapefile oficial.',
+    recommendedAction: 'Registro de archivo histórico validado mediante cartografía oficial.',
     active: false,
   },
 ];
