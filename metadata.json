@@ -1,0 +1,8 @@
+{
+  "name": "TELEDETECCIÓN AZUL",
+  "description": "Sistema Inteligente de Vigilancia Costera y Control de Episodios de Microalgas y Microplásticos en Canarias",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
