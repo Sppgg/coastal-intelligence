@@ -85,7 +85,7 @@ export const NavigationSidebar: React.FC<NavigationSidebarProps> = ({
       key: 'settings',
       number: '07',
       label: 'Configuración y servicios',
-      shortDesc: 'Pipeline Python y CRS',
+      shortDesc: 'Pipeline y CRS',
       icon: Settings,
     },
   ];

@@ -24,7 +24,6 @@ export const SettingsPipelineModule: React.FC = () => {
   const [scripts] = useState(REPRODUCIBLE_PYTHON_SCRIPTS);
   const [selectedScriptId, setSelectedScriptId] = useState<string>(scripts[0]?.id || '');
   const [isRunning, setIsRunning] = useState(false);
-  const [copiedId, setCopiedId] = useState<string | null>(null);
 
   // CRS Calculator state
   const [activeCRS, setActiveCRS] = useState<'EPSG:4326' | 'EPSG:32628'>('EPSG:4326');
@@ -50,12 +49,6 @@ export const SettingsPipelineModule: React.FC = () => {
   };
 
   const utmCoords = computeUTM28N(calcLat, calcLng);
-
-  const handleCopyCode = (code: string, id: string) => {
-    navigator.clipboard.writeText(code);
-    setCopiedId(id);
-    setTimeout(() => setCopiedId(null), 2000);
-  };
 
   const handleRunTask = async (scriptId: string) => {
     setIsRunning(true);
@@ -90,10 +83,10 @@ export const SettingsPipelineModule: React.FC = () => {
             <span className="text-xs font-mono font-bold text-cyan-300 uppercase">MÓDULO 07</span>
           </div>
           <h2 className="text-base md:text-lg font-bold text-white">
-            Configuración Geoespacial & Pipeline de Automatización Python
+            Configuración Geoespacial & Pipeline de Procesamiento Científico
           </h2>
           <p className="text-xs text-slate-400 mt-0.5">
-            Cadena reproducible de procesamiento científico (Rasterio, GeoPandas, Shapely) y especificación de backend.
+            Cadena metodológica de procesamiento científico (Rasterio, GeoPandas, Shapely) y especificación de backend.
           </p>
         </div>
 
@@ -194,66 +187,66 @@ export const SettingsPipelineModule: React.FC = () => {
         </div>
       </div>
 
-      {/* Section B.2: Arquitectura Leaflet & Proveedores de Teselas */}
+      {/* Section B.2: Arquitectura Cartográfica & Proveedores */}
       <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3">
         <div className="flex items-center justify-between">
           <div>
             <h3 className="text-sm font-bold text-white flex items-center gap-2">
               <Compass className="w-4 h-4 text-cyan-400" />
-              <span>Arquitectura de Leaflet & Proveedores de Teselas Cartográficas</span>
+              <span>Arquitectura Geoespacial & Proveedores de Teselas</span>
             </h3>
             <p className="text-xs text-slate-400 mt-0.5">
-              Estado de licencias, llaves de acceso y conexión con servicios de mapas satelitales
+              Conexión de alta disponibilidad con servicios de mapas satelitales y batimétricos
             </p>
           </div>
-          <span className="text-[10px] font-mono text-emerald-400 bg-emerald-950 px-2 py-0.5 rounded border border-emerald-800 font-bold">
-            Leaflet v1.9.4 &middot; Open-Source
+          <span className="text-[10px] font-mono text-cyan-400 bg-cyan-950 px-2.5 py-1 rounded border border-cyan-800 font-bold">
+            Estándares OGC &middot; EPSG:3857 / EPSG:4326
           </span>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
           <div className="p-3 bg-slate-950 rounded-lg border border-slate-800 space-y-1.5">
             <div className="flex items-center justify-between">
-              <span className="font-bold text-white">Leaflet Core Engine</span>
-              <span className="text-[10px] text-emerald-400 font-mono">Sin API Key</span>
+              <span className="font-bold text-white">Motor Cartográfico</span>
+              <span className="text-[10px] text-cyan-400 font-mono">Web GIS</span>
             </div>
             <p className="text-[11px] text-slate-400 leading-normal">
-              Leaflet es una biblioteca JavaScript 100% libre (licencia BSD de 2 cláusulas) que <strong>no requiere ninguna API key propia</strong> para funcionar ni impone límites de inicialización.
+              Visualización geoespacial de alto rendimiento con soporte nativo para capas ráster, geometrías vectoriales complejas e interactividad en tiempo real.
             </p>
           </div>
 
           <div className="p-3 bg-slate-950 rounded-lg border border-slate-800 space-y-1.5">
             <div className="flex items-center justify-between">
-              <span className="font-bold text-white">Capas Base Abiertas</span>
-              <span className="text-[10px] text-emerald-400 font-mono">Operativas</span>
+              <span className="font-bold text-white">Capas Base Oficiales</span>
+              <span className="text-[10px] text-emerald-400 font-mono">Disponibles</span>
             </div>
             <p className="text-[11px] text-slate-400 leading-normal">
-              Proveedores por defecto 100% abiertos sin marcas de agua: <strong>Esri World Satélite</strong>, <strong>PNOA Ortofoto Canarias (IGN)</strong>, <strong>Esri Ocean Náutico</strong>, <strong>Esri Dark Nocturno</strong> y <strong>OpenStreetMap</strong>.
+              Mosaicos satelitales y batimétricos integrados: <strong>Esri World Satélite</strong>, <strong>PNOA Ortofoto Canarias (IGN 25cm)</strong>, <strong>Esri Ocean Náutico</strong>, <strong>Esri Dark Nocturno</strong> y <strong>OpenStreetMap</strong>.
             </p>
           </div>
 
           <div className="p-3 bg-slate-950 rounded-lg border border-slate-800 space-y-1.5">
             <div className="flex items-center justify-between">
-              <span className="font-bold text-white">Proveedores Comerciales (.env)</span>
-              <span className="text-[10px] text-cyan-400 font-mono">Opcional</span>
+              <span className="font-bold text-white">Interoperabilidad OGC</span>
+              <span className="text-[10px] text-cyan-400 font-mono">INSPIRE</span>
             </div>
             <p className="text-[11px] text-slate-400 leading-normal">
-              Soporte integrado para tokens de Mapbox (<code className="text-cyan-300">VITE_MAPBOX_ACCESS_TOKEN</code>) o MapTiler (<code className="text-cyan-300">VITE_MAPTILER_API_KEY</code>) configurables en el archivo de entorno.
+              Conectores compatibles con servicios WMTS/WMS del Instituto Geográfico Nacional (IGN), IDE Canarias (GRAFCAN) y Copernicus Marine Service.
             </p>
           </div>
         </div>
       </div>
 
-      {/* Section C: Reproducible Python Code & Script Runner */}
+      {/* Section C: Scientific Geoprocessing Modules */}
       <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-4">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-2">
           <div>
             <h3 className="text-sm font-bold text-white flex items-center gap-2">
-              <FileCode2 className="w-4 h-4 text-cyan-400" />
-              <span>Scripts Python de Procesamiento Científico (GeoPandas / Rasterio / Shapely)</span>
+              <Cpu className="w-4 h-4 text-cyan-400" />
+              <span>Módulos de Geoprocesamiento y Algoritmos Científicos</span>
             </h3>
             <p className="text-xs text-slate-400 mt-0.5">
-              Código fuente oficial y reproducible para ejecución local o en contenedor de backend
+              Parámetros de cálculo y ejecución en servidor de backend (GeoPandas, Rasterio, Shapely)
             </p>
           </div>
 
@@ -271,41 +264,49 @@ export const SettingsPipelineModule: React.FC = () => {
             </select>
 
             <button
-              onClick={() => handleCopyCode(selectedScript.code, selectedScript.id)}
-              className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-cyan-300 text-xs font-mono flex items-center gap-1.5 transition"
-            >
-              {copiedId === selectedScript.id ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
-              <span>{copiedId === selectedScript.id ? 'Copiado' : 'Copiar Script'}</span>
-            </button>
-
-            <button
               onClick={() => handleRunTask(selectedScript.id)}
               disabled={isRunning}
-              className="px-3 py-1.5 rounded-lg bg-cyan-600 hover:bg-cyan-500 disabled:bg-slate-800 text-white text-xs font-semibold flex items-center gap-1.5 shadow-sm transition"
+              className="px-3.5 py-1.5 rounded-lg bg-cyan-600 hover:bg-cyan-500 disabled:bg-slate-800 text-white text-xs font-semibold flex items-center gap-1.5 shadow-sm transition"
             >
               <Play className="w-3.5 h-3.5" />
-              <span>{isRunning ? 'Ejecutando...' : 'Lanzar Tarea'}</span>
+              <span>{isRunning ? 'Ejecutando...' : 'Lanzar Tarea de Geoprocesamiento'}</span>
             </button>
           </div>
         </div>
 
-        {/* Script Details */}
-        <div className="p-3 bg-slate-950/80 rounded-lg border border-slate-800 text-xs space-y-1.5">
-          <div className="flex items-center gap-2 text-[11px] font-mono">
-            <span className="text-slate-400">Bibliotecas:</span>
-            {selectedScript.libraries.map((lib) => (
-              <span key={lib} className="px-1.5 py-0.2 rounded bg-slate-900 border border-slate-800 text-cyan-400">
-                {lib}
-              </span>
-            ))}
+        {/* Module Technical Specification */}
+        <div className="p-4 bg-slate-950 rounded-xl border border-slate-800 text-xs space-y-3">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800/80 pb-2">
+            <div>
+              <span className="text-[10px] text-cyan-400 font-mono font-bold block">{selectedScript.module}</span>
+              <h4 className="text-sm font-bold text-white">{selectedScript.title}</h4>
+            </div>
+            <div className="flex items-center gap-1.5">
+              {selectedScript.libraries.map((lib) => (
+                <span key={lib} className="px-2 py-0.5 rounded bg-slate-900 border border-slate-800 text-[10px] font-mono text-slate-300">
+                  {lib}
+                </span>
+              ))}
+            </div>
           </div>
-          <p className="text-slate-300 text-xs">{selectedScript.description}</p>
-        </div>
 
-        {/* Code Preview */}
-        <pre className="p-4 rounded-xl bg-slate-950 border border-slate-800 text-xs font-mono text-slate-300 overflow-x-auto max-h-80 leading-relaxed">
-          {selectedScript.code}
-        </pre>
+          <p className="text-slate-300 text-xs leading-relaxed">{selectedScript.description}</p>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-2 border-t border-slate-800/80 text-[11px] font-mono">
+            <div className="p-2 bg-slate-900/60 rounded border border-slate-800/60">
+              <span className="text-slate-500 block text-[9.5px]">MODO DE EJECUCIÓN</span>
+              <span className="text-cyan-300">Backend Asíncrono</span>
+            </div>
+            <div className="p-2 bg-slate-900/60 rounded border border-slate-800/60">
+              <span className="text-slate-500 block text-[9.5px]">PROYECCIÓN DE SALIDA</span>
+              <span className="text-emerald-300">UTM 28N / EPSG:32628</span>
+            </div>
+            <div className="p-2 bg-slate-900/60 rounded border border-slate-800/60">
+              <span className="text-slate-500 block text-[9.5px]">CONFORMIDAD OGC</span>
+              <span className="text-slate-300">GeoJSON / NetCDF4</span>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Section D: Processing Tasks Activity Log */}

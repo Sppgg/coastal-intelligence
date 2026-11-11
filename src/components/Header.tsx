@@ -47,7 +47,7 @@ export const Header: React.FC<HeaderProps> = ({
       case 'dynamics': return '04. Cambios Geomorfológicos y Retroceso Costero (Módulo C)';
       case 'datasets': return '05. Inventario de Capas, Metadatos e Importación';
       case 'analysis': return '06. Estadísticas, Histogramas e Informes Científicos';
-      case 'settings': return '07. Configuración Geoespacial y Automatizaciones Python';
+      case 'settings': return '07. Configuración Geoespacial y Pipeline de Procesamiento';
       default: return 'Plataforma Geoespacial';
     }
   };

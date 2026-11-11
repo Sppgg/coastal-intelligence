@@ -97,15 +97,8 @@ export const ArchitectureModal: React.FC<ArchitectureModalProps> = ({
 }) => {
   const [activeTab, setActiveTab] = useState<'pipeline' | 'copernicusApis'>('pipeline');
   const [selectedApiDataset, setSelectedApiDataset] = useState<string>('CMEMS_PHY');
-  const [copiedKey, setCopiedKey] = useState<string | null>(null);
 
   if (!isOpen) return null;
-
-  const handleCopy = (code: string, key: string) => {
-    navigator.clipboard.writeText(code);
-    setCopiedKey(key);
-    setTimeout(() => setCopiedKey(null), 2000);
-  };
 
   return (
     <div
@@ -157,8 +150,8 @@ export const ArchitectureModal: React.FC<ArchitectureModalProps> = ({
                 : 'border-transparent text-slate-400 hover:text-slate-200'
             }`}
           >
-            <Code2 className="w-3.5 h-3.5" />
-            <span>2. Llamadas API Copernicus (PDF)</span>
+            <Database className="w-3.5 h-3.5" />
+            <span>2. Datasets Satelitales & Copernicus</span>
           </button>
         </div>
 
@@ -225,12 +218,12 @@ export const ArchitectureModal: React.FC<ArchitectureModalProps> = ({
               </div>
             </>
           ) : (
-            /* COPERNICUS APIS TAB */
+            /* COPERNICUS DATASETS SPECIFICATION TAB */
             <div className="space-y-4">
               <div className="p-3 bg-slate-950 rounded-lg border border-slate-800 text-[11px] text-slate-300">
                 <p>
-                  Estas son las llamadas oficiales a las librerías <code>copernicusmarine</code> y <code>cdsapi</code> proporcionadas
-                  en el documento técnico adjunto para la vigilancia de los episodios en Canarias.
+                  Catálogo técnico de productos oceanográficos y atmosféricos de Copernicus Marine Service (CMEMS)
+                  y Climate Data Store (CDS/ECMWF) integrados para la vigilancia ambiental del archipiélago canario.
                 </p>
               </div>
 
@@ -253,7 +246,7 @@ export const ArchitectureModal: React.FC<ArchitectureModalProps> = ({
                 ))}
               </div>
 
-              {/* Selected Dataset Details & Code */}
+              {/* Selected Dataset Technical Details */}
               {COPERNICUS_DATASETS[selectedApiDataset] && (
                 <div className="p-4 bg-slate-950 rounded-xl border border-cyan-900/60 space-y-3 font-mono">
                   <div className="flex items-start justify-between">
@@ -262,59 +255,39 @@ export const ArchitectureModal: React.FC<ArchitectureModalProps> = ({
                         {COPERNICUS_DATASETS[selectedApiDataset].name}
                       </h4>
                       <div className="text-[10px] text-cyan-400 mt-0.5">
-                        Dataset ID: {COPERNICUS_DATASETS[selectedApiDataset].id}
+                        Identificador de Producto: {COPERNICUS_DATASETS[selectedApiDataset].id}
                       </div>
                       <div className="text-[10px] text-slate-400 mt-0.5">
-                        Proveedor: {COPERNICUS_DATASETS[selectedApiDataset].provider}
+                        Servicio Emisor: {COPERNICUS_DATASETS[selectedApiDataset].provider}
                       </div>
                     </div>
 
-                    <button
-                      onClick={() => handleCopy(COPERNICUS_DATASETS[selectedApiDataset].pythonSnippet, selectedApiDataset)}
-                      className="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs flex items-center gap-1.5 transition border border-slate-700"
-                    >
-                      {copiedKey === selectedApiDataset ? (
-                        <>
-                          <CheckCheck className="w-3.5 h-3.5 text-emerald-400" />
-                          <span className="text-emerald-400">Copiado</span>
-                        </>
-                      ) : (
-                        <>
-                          <Copy className="w-3.5 h-3.5" />
-                          <span>Copiar código Python</span>
-                        </>
-                      )}
-                    </button>
+                    <span className="px-2 py-0.5 rounded bg-slate-900 text-cyan-300 text-[10px] border border-slate-700">
+                      OGC NetCDF-4
+                    </span>
                   </div>
 
                   {/* Variables table */}
                   <div className="pt-2 border-t border-slate-800 text-[10px]">
-                    <span className="text-slate-400 font-bold block mb-1">Variables Extraídas:</span>
+                    <span className="text-slate-400 font-bold block mb-1">Variables y Parámetros Biofísicos:</span>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
                       {COPERNICUS_DATASETS[selectedApiDataset].variables.map((v) => (
-                        <div key={v.code} className="bg-slate-900 p-1.5 rounded border border-slate-800">
+                        <div key={v.code} className="bg-slate-900 p-2 rounded border border-slate-800">
                           <span className="text-cyan-300 font-bold">{v.code}</span>
                           <span className="text-slate-400 ml-1">({v.unit})</span>: {v.name}
+                          <p className="text-[9px] text-slate-500 mt-0.5">{v.description}</p>
                         </div>
                       ))}
                     </div>
                   </div>
 
                   {/* Spatial and temporal bounds */}
-                  <div className="pt-2 border-t border-slate-800 text-[10px] text-slate-400 space-y-0.5">
-                    <div><b>Área (Bounding Box):</b> {COPERNICUS_DATASETS[selectedApiDataset].spatialBounds.description}</div>
-                    <div><b>Cobertura Temporal:</b> {COPERNICUS_DATASETS[selectedApiDataset].timeCoverage}</div>
+                  <div className="pt-2 border-t border-slate-800 text-[10px] text-slate-400 space-y-1">
+                    <div><b>Región Geográfica (Bounding Box):</b> {COPERNICUS_DATASETS[selectedApiDataset].spatialBounds.description}</div>
+                    <div><b>Ventana Temporal de Validación:</b> {COPERNICUS_DATASETS[selectedApiDataset].timeCoverage}</div>
                     {COPERNICUS_DATASETS[selectedApiDataset].depthMeters !== undefined && (
-                      <div><b>Profundidad Superficial:</b> {COPERNICUS_DATASETS[selectedApiDataset].depthMeters} metros</div>
+                      <div><b>Nivel de Profundidad Evaluado:</b> {COPERNICUS_DATASETS[selectedApiDataset].depthMeters} metros (capa de superficie marina)</div>
                     )}
-                  </div>
-
-                  {/* Python Snippet */}
-                  <div className="pt-2 border-t border-slate-800">
-                    <span className="text-slate-400 text-[10px] font-bold block mb-1">Código Python Ejecutable:</span>
-                    <pre className="bg-slate-900/90 text-slate-200 p-3 rounded-lg text-[10px] leading-relaxed overflow-x-auto border border-slate-800">
-                      {COPERNICUS_DATASETS[selectedApiDataset].pythonSnippet}
-                    </pre>
                   </div>
                 </div>
               )}

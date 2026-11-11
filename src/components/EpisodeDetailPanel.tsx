@@ -48,9 +48,6 @@ export const EpisodeDetailPanel: React.FC<EpisodeDetailPanelProps> = ({
   onOpenAnalysis,
   onOpenSatelliteImagery,
 }) => {
-  const [showApiSnippet, setShowApiSnippet] = useState(false);
-  const [copiedSnippet, setCopiedSnippet] = useState(false);
-
   if (!episode) return null;
 
   const getRiskBadgeColor = (risk: RiskLevel) => {
@@ -81,21 +78,7 @@ export const EpisodeDetailPanel: React.FC<EpisodeDetailPanelProps> = ({
     }
   };
 
-  const handleCopyCode = () => {
-    const code = episode.apiPythonSnippet || `# Consulta Copernicus Marine
-import copernicusmarine
-copernicusmarine.subset(
-    dataset_id="${episode.copernicusDatasetId}",
-    variables=["thetao", "uo", "vo"],
-    minimum_longitude=-19, maximum_longitude=-13,
-    minimum_latitude=27, maximum_latitude=30,
-    start_datetime="${episode.date}T00:00:00", end_datetime="${episode.date}T23:59:59",
-    minimum_depth=0.49402499198913574, maximum_depth=0.49402499198913574
-)`;
-    navigator.clipboard.writeText(code);
-    setCopiedSnippet(true);
-    setTimeout(() => setCopiedSnippet(false), 2000);
-  };
+
 
   return (
     <div
@@ -284,57 +267,6 @@ copernicusmarine.subset(
             </div>
           </div>
 
-          {/* Button to view Python API query from PDF */}
-          <button
-            onClick={() => setShowApiSnippet(!showApiSnippet)}
-            className="w-full mt-2 py-1.5 px-3 rounded-lg bg-slate-900 hover:bg-slate-800 text-cyan-400 border border-slate-700/80 text-xs font-mono font-medium flex items-center justify-between transition"
-          >
-            <span className="flex items-center gap-1.5">
-              <Terminal className="w-3.5 h-3.5 text-cyan-400" />
-              <span>Ver código Python de llamada API</span>
-            </span>
-            <span className="text-[10px] text-slate-400 underline">
-              {showApiSnippet ? 'Ocultar' : 'Consultar'}
-            </span>
-          </button>
-
-          {/* Python API Code Viewer */}
-          {showApiSnippet && (
-            <div className="mt-2 p-3 bg-slate-950 rounded-lg border border-cyan-800/70 font-mono text-[10px] text-slate-200 space-y-2 animate-in fade-in duration-150">
-              <div className="flex items-center justify-between border-b border-slate-800 pb-1.5 text-cyan-300">
-                <span className="font-bold flex items-center gap-1">
-                  <Terminal className="w-3 h-3 text-cyan-400" />
-                  Llamada API Oficial (PDF)
-                </span>
-                <button
-                  onClick={handleCopyCode}
-                  className="flex items-center gap-1 text-[10px] text-slate-400 hover:text-white bg-slate-900 px-2 py-0.5 rounded border border-slate-700 transition"
-                >
-                  {copiedSnippet ? <CheckCheck className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
-                  <span>{copiedSnippet ? 'Copiado' : 'Copiar'}</span>
-                </button>
-              </div>
-              <pre className="overflow-x-auto text-slate-300 bg-slate-900/90 p-2 rounded text-[9.5px] leading-relaxed">
-                {episode.apiPythonSnippet || `# Consulta CMEMS Ocean Physics
-import copernicusmarine
-
-copernicusmarine.subset(
-    dataset_id="${episode.copernicusDatasetId}",
-    variables=["thetao", "uo", "vo"],
-    minimum_longitude=-19, maximum_longitude=-13,
-    minimum_latitude=27, maximum_latitude=30,
-    start_datetime="${episode.date}T00:00:00",
-    end_datetime="${episode.date}T23:59:59",
-    minimum_depth=0.49402499198913574,
-    maximum_depth=0.49402499198913574,
-)`}
-              </pre>
-              <div className="text-[9px] text-slate-400 flex items-center justify-between">
-                <span>Dataset: {episode.copernicusDatasetId}</span>
-                <span>Depth: 0.494 m</span>
-              </div>
-            </div>
-          )}
         </div>
 
         {/* SECCIÓN 2: DATOS ÓPTICOS Y GEOMÉTRICOS DEL EPISODIO */}
@@ -423,7 +355,7 @@ copernicusmarine.subset(
             <button
               onClick={() => onOpenSatelliteImagery(episode.date)}
               className="w-full mt-2 py-1.5 px-3 rounded-lg bg-slate-900 hover:bg-slate-800 text-cyan-300 hover:text-white border border-slate-700 text-xs font-mono font-medium flex items-center justify-center gap-1.5 transition shadow-sm"
-              title="Llamadas Sentinel y Landsat - Ver imagen satelital de la isla"
+              title="Observación Satelital — Ver imagen multiespectral de la isla"
             >
               <Satellite className="w-3.5 h-3.5 text-cyan-400" />
               <span>Ver imagen satelital Sentinel/Landsat de {episode.island}</span>

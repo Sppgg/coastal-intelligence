@@ -41,7 +41,6 @@ export const SatelliteImageryModal: React.FC<SatelliteImageryModalProps> = ({
   const [bandCombo, setBandCombo] = useState<BandCombination>('TRUE_COLOR');
   const [activeIsland, setActiveIsland] = useState<string>(selectedIsland === 'Canarias' ? 'Tenerife' : selectedIsland);
   const [activeTab, setActiveTab] = useState<'IMAGE' | 'API_CODE'>('IMAGE');
-  const [copiedCode, setCopiedCode] = useState(false);
   const [zoomLevel, setZoomLevel] = useState(1);
 
   if (!isOpen) return null;
@@ -110,83 +109,6 @@ export const SatelliteImageryModal: React.FC<SatelliteImageryModalProps> = ({
 
   const currentIsland = islandConfigs[activeIsland] || islandConfigs['Tenerife'];
 
-  // Official Python API call scripts (CDSE & Landsat STAC)
-  const sentinelApiScript = `# Consulta Oficial Copernicus Data Space Ecosystem (CDSE) / Sentinel Hub
-# Producto: Sentinel-2 MSI Nivel 2A (Reflectancia de Fondo de Atmósfera BOA)
-from sentinelhub import SHConfig, SentinelHubRequest, DataCollection, MimeType, CRS, BBox
-
-evalscript_copernicus = """
-//VERSION=3
-// Combinación espectral oficial para Detección de Microalgas y Biomasa Costera
-function setup() {
-  return {
-    input: ["B02", "B03", "B04", "B08", "B11", "dataMask"],
-    output: { bands: 4 }
-  };
-}
-
-function evaluatePixel(sample) {
-  // NDCI (Normalized Difference Chlorophyll Index) = (B05 - B04) / (B05 + B04)
-  // Visualización RGB optimizada para aguas costeras canarias
-  let red = sample.B04 * 2.8;
-  let green = sample.B03 * 2.8;
-  let blue = sample.B02 * 2.8;
-  let nir = sample.B08 * 3.0; // Infrarrojo cercano (reflejo de agregaciones superficiales)
-  
-  return [red, green, blue, sample.dataMask];
-}
-"""
-
-request = SentinelHubRequest(
-    evalscript=evalscript_copernicus,
-    input_data=[
-        SentinelHubRequest.input_data(
-            data_collection=DataCollection.SENTINEL2_L2A,
-            time_interval=("${selectedDate}T00:00:00Z", "${selectedDate}T23:59:59Z"),
-            maxcc=0.20 // Máxima nubosidad 20%
-        )
-    ],
-    responses=[SentinelHubRequest.output_response('default', MimeType.PNG)],
-    bbox=BBox(bbox=[${currentIsland.bbox.join(', ')}], crs=CRS.WGS84),
-    size=[2048, 2048]
-)
-
-# Descargar e inicializar array georreferenciado
-image_array = request.get_data()[0]
-print(f"Pase Sentinel-2 para ${currentIsland.name} descargado: {image_array.shape}")`;
-
-  const landsatApiScript = `# Consulta Oficial Landsat 8/9 OLI-2 / TIRS-2 (Collection 2 Level-2)
-# Datos de Reflectancia y Temperatura Radiativa Superficial del Mar (SST)
-import pystac_client
-import planetary_computer
-
-catalog = pystac_client.Client.open(
-    "https://planetarycomputer.microsoft.com/api/stac/v1",
-    modifier=planetary_computer.sign_inplace
-)
-
-search = catalog.search(
-    collections=["landsat-c2-l2"],
-    bbox=[${currentIsland.bbox.join(', ')}],
-    datetime="${selectedDate}",
-    query={"eo:cloud_cover": {"lt": 20}}
-)
-
-items = list(search.item_collection())
-print(f"Escenas Landsat 8/9 para ${currentIsland.name} en ${selectedDate}: {len(items)}")
-for item in items:
-    print(f"Scene ID: {item.id} | Sensor: {item.properties.get('instruments')} | Nubosidad: {item.properties.get('eo:cloud_cover')}%")
-    # Bandas: B1 (Coastal/Aerosol 30m), B2-B4 (Visible RGB), B10 (Thermal IR SST 100m)
-`;
-
-  const activeScript = mission === 'LANDSAT_8_9' ? landsatApiScript : sentinelApiScript;
-
-  const handleCopyCode = () => {
-    navigator.clipboard.writeText(activeScript);
-    setCopiedCode(true);
-    setTimeout(() => setCopiedCode(false), 2000);
-  };
-
   return (
     <div 
       id="coastal-satellite-imagery-modal"
@@ -203,7 +125,7 @@ for item in items:
             <div>
               <div className="flex items-center gap-2">
                 <h2 className="text-base font-bold text-white tracking-wide">
-                  Llamadas Sentinel & Landsat — Imagen de Gran Resolución de la Isla
+                  Observación Satelital Multiespectral — Costas de Canarias
                 </h2>
                 <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-cyan-950 text-cyan-300 border border-cyan-800">
                   COPERNICUS CDSE
@@ -284,7 +206,7 @@ for item in items:
             </button>
           </div>
 
-          {/* View Tab: Image vs API Code */}
+          {/* View Tab: Image vs Sensor Tech Specs */}
           <div className="flex items-center gap-1 bg-slate-950 p-1 rounded-xl border border-slate-800">
             <button
               onClick={() => setActiveTab('IMAGE')}
@@ -305,8 +227,8 @@ for item in items:
                   : 'text-slate-400 hover:text-slate-200'
               }`}
             >
-              <Terminal className="w-3.5 h-3.5" />
-              <span>Código API Python</span>
+              <Layers className="w-3.5 h-3.5" />
+              <span>Ficha Técnica del Sensor</span>
             </button>
           </div>
         </div>
@@ -550,29 +472,70 @@ for item in items:
               </div>
             </div>
           ) : (
-            /* API Code Tab */
-            <div className="space-y-3 font-mono">
-              <div className="flex items-center justify-between pb-2 border-b border-slate-800">
-                <span className="text-xs text-cyan-300 font-bold flex items-center gap-2">
-                  <Terminal className="w-4 h-4 text-cyan-400" />
-                  Script de Consulta Reproducible Oficial ({mission === 'LANDSAT_8_9' ? 'Landsat STAC API' : 'Copernicus Data Space Ecosystem'})
-                </span>
-                <button
-                  onClick={handleCopyCode}
-                  className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-cyan-950 hover:bg-cyan-900 text-cyan-300 border border-cyan-800 text-xs font-semibold transition"
-                >
-                  {copiedCode ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
-                  <span>{copiedCode ? 'Código Copiado' : 'Copiar Script Python'}</span>
-                </button>
-              </div>
+            /* Sensor Specification Tab */
+            <div className="space-y-4 font-sans text-xs">
+              <div className="p-4 bg-slate-950 rounded-xl border border-cyan-900/40 space-y-3">
+                <div className="flex items-center justify-between pb-2 border-b border-slate-800">
+                  <div>
+                    <h3 className="font-bold text-white text-sm">
+                      {mission === 'SENTINEL_2'
+                        ? 'Sensor Multiespectral MSI (Sentinel-2A/2B)'
+                        : mission === 'LANDSAT_8_9'
+                        ? 'Instrumento OLI-2 / TIRS-2 (Landsat 9)'
+                        : 'Instrumento OLCI de Color del Océano (Sentinel-3)'}
+                    </h3>
+                    <p className="text-slate-400 text-xs mt-0.5">
+                      {mission === 'SENTINEL_2'
+                        ? 'Agencia Espacial Europea (ESA) & Programa Copernicus'
+                        : mission === 'LANDSAT_8_9'
+                        ? 'Servicio Geológico de EE. UU. (USGS) & NASA'
+                        : 'EUMETSAT & Agencia Espacial Europea (ESA)'}
+                    </p>
+                  </div>
+                  <span className="px-2.5 py-1 rounded bg-cyan-950 border border-cyan-800 text-cyan-300 font-mono text-[11px] font-bold">
+                    Nivel 2A / BOA
+                  </span>
+                </div>
 
-              <div className="relative bg-slate-950 p-4 rounded-xl border border-cyan-900/40 text-[11px] text-slate-300 overflow-x-auto leading-relaxed">
-                <pre>{activeScript}</pre>
-              </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                  <div className="p-3 bg-slate-900/80 rounded-lg border border-slate-800 space-y-1">
+                    <span className="text-[10px] text-slate-500 uppercase font-mono block">Resolución Espacial</span>
+                    <span className="font-bold text-cyan-300 font-mono">
+                      {mission === 'SENTINEL_2' ? '10 m (B2, B3, B4, B8) / 20 m (Red Edge)' : mission === 'LANDSAT_8_9' ? '30 m multiespectral / 15 m pancromático' : '300 m espectro completo'}
+                    </span>
+                  </div>
 
-              <div className="p-3 bg-slate-950/80 rounded-xl border border-slate-800 text-[11px] text-slate-400 flex items-center justify-between">
-                <span>Catálogo: CDSE OpenSearch / STAC API Copernicus</span>
-                <span>Formato: Cloud-Optimized GeoTIFF (COG) / NetCDF4</span>
+                  <div className="p-3 bg-slate-900/80 rounded-lg border border-slate-800 space-y-1">
+                    <span className="text-[10px] text-slate-500 uppercase font-mono block">Tiempo de Revisitado</span>
+                    <span className="font-bold text-emerald-300 font-mono">
+                      {mission === 'SENTINEL_2' ? '5 días con constelación A+B' : mission === 'LANDSAT_8_9' ? '8 días combinando L8 y L9' : 'Menos de 2 días en latitudes medias'}
+                    </span>
+                  </div>
+
+                  <div className="p-3 bg-slate-900/80 rounded-lg border border-slate-800 space-y-1">
+                    <span className="text-[10px] text-slate-500 uppercase font-mono block">Bandas Ópticas Marinas Clave</span>
+                    <span className="font-medium text-slate-200">
+                      {mission === 'SENTINEL_2'
+                        ? 'B2 (Azul 490nm), B3 (Verde 560nm), B4 (Rojo 665nm), B5 (Red Edge 705nm)'
+                        : mission === 'LANDSAT_8_9'
+                        ? 'B1 (Costero/Aerosol 443nm), B2 (Azul 482nm), B3 (Verde 561nm), B4 (Rojo 655nm)'
+                        : 'Oa03 (442.5nm), Oa05 (510nm), Oa06 (560nm), Oa09 (673.75nm)'}
+                    </span>
+                  </div>
+
+                  <div className="p-3 bg-slate-900/80 rounded-lg border border-slate-800 space-y-1">
+                    <span className="text-[10px] text-slate-500 uppercase font-mono block">Corrección Atmosférica</span>
+                    <span className="font-medium text-slate-200">
+                      Reflectancia en el fondo de la atmósfera (BOA) mediante algoritmos C2RCC / Sen2Cor adaptados a aguas marinas.
+                    </span>
+                  </div>
+                </div>
+
+                <div className="p-3 bg-slate-900/60 rounded-lg border border-slate-800 text-[11px] text-slate-400 flex flex-wrap items-center justify-between gap-2">
+                  <span>Catálogo de Acceso: <strong>Copernicus Data Space Ecosystem (CDSE)</strong></span>
+                  <span>Formato de Almacenamiento: <strong>Cloud-Optimized GeoTIFF (COG)</strong></span>
+                  <span>Proyección: <strong>UTM Zona 28N (EPSG:32628) / WGS84</strong></span>
+                </div>
               </div>
             </div>
           )}

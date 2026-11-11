@@ -360,36 +360,37 @@ export const DatasetsModule: React.FC<DatasetsModuleProps> = ({
                 </div>
               </div>
 
-              {/* Reproducible Python Ingestion Snippet */}
-              {selectedDataset.pythonSnippet ? (
-                <div className="bg-slate-900 border border-slate-800 rounded-xl p-4.5 space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-mono font-bold text-slate-300 flex items-center gap-1.5">
-                      <FileCode2 className="w-3.5 h-3.5 text-cyan-400" />
-                      <span>Script Python Reproducible de Ingesta Oficial</span>
-                    </span>
-                    <button
-                      onClick={() => handleCopySnippet(selectedDataset.pythonSnippet || '', selectedDataset.id)}
-                      className="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-cyan-300 text-[11px] font-mono flex items-center gap-1 transition"
-                    >
-                      {copiedId === selectedDataset.id ? (
-                        <>
-                          <Check className="w-3 h-3 text-emerald-400" />
-                          <span className="text-emerald-300">Copiado</span>
-                        </>
-                      ) : (
-                        <>
-                          <Copy className="w-3 h-3" />
-                          <span>Copiar Código</span>
-                        </>
-                      )}
-                    </button>
-                  </div>
-                  <pre className="p-3 rounded-lg bg-slate-950 border border-slate-800 text-[11px] font-mono text-slate-300 overflow-x-auto">
-                    {selectedDataset.pythonSnippet}
-                  </pre>
+              {/* Protocolo de Ingesta y Conformidad OGC */}
+              <div className="bg-slate-900 border border-slate-800 rounded-xl p-4.5 space-y-2.5">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-mono font-bold text-slate-300 flex items-center gap-1.5">
+                    <Database className="w-3.5 h-3.5 text-cyan-400" />
+                    <span>Conformidad OGC & Especificación de Ingesta</span>
+                  </span>
+                  <span className="px-2 py-0.5 rounded bg-cyan-950 border border-cyan-800 text-[10px] font-mono text-cyan-300">
+                    Estándar OGC / INSPIRE
+                  </span>
                 </div>
-              ) : null}
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+                  <div className="p-2.5 bg-slate-950 rounded-lg border border-slate-800">
+                    <span className="text-[10px] text-slate-500 uppercase font-mono block">Formato Nativo</span>
+                    <span className="font-semibold text-slate-200 font-mono">{selectedDataset.format}</span>
+                  </div>
+                  <div className="p-2.5 bg-slate-950 rounded-lg border border-slate-800">
+                    <span className="text-[10px] text-slate-500 uppercase font-mono block">Sistema de Referencia</span>
+                    <span className="font-semibold text-slate-200 font-mono">EPSG:32628 / WGS84</span>
+                  </div>
+                  <div className="p-2.5 bg-slate-950 rounded-lg border border-slate-800">
+                    <span className="text-[10px] text-slate-500 uppercase font-mono block">Licencia de Uso</span>
+                    <span className="font-semibold text-emerald-400 font-mono text-[11px] truncate block">{selectedDataset.license}</span>
+                  </div>
+                </div>
+
+                <p className="text-[11px] text-slate-400 leading-relaxed pt-1 border-t border-slate-800/80">
+                  {selectedDataset.citation}
+                </p>
+              </div>
             </div>
           ) : null}
         </div>

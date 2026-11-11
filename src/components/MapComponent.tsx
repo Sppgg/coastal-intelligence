@@ -1097,10 +1097,9 @@ export const MapComponent: React.FC<MapComponentProps> = ({
         </button>
 
         {showBasemapMenu && (
-          <div className="mt-1.5 bg-slate-950/95 border border-slate-700 rounded-lg p-2 shadow-2xl space-y-1 text-xs backdrop-blur-md w-56">
-            <div className="px-2 py-1 text-[10px] uppercase font-mono text-slate-400 font-bold border-b border-slate-800 flex items-center justify-between">
-              <span>Capas Abiertas</span>
-              <span className="text-emerald-400 text-[9px]">Sin API Key</span>
+          <div className="mt-1.5 bg-slate-950/95 border border-slate-700 rounded-lg p-2 shadow-2xl space-y-1 text-xs backdrop-blur-md w-52">
+            <div className="px-2 py-1 text-[10px] uppercase font-mono text-slate-400 font-bold border-b border-slate-800">
+              Capas Cartográficas
             </div>
             <button
               onClick={() => {
@@ -1112,7 +1111,6 @@ export const MapComponent: React.FC<MapComponentProps> = ({
               }`}
             >
               <span>🛰️ Esri World Satélite</span>
-              <span className="text-[9px] text-emerald-400 font-mono">Recomendado</span>
             </button>
             <button
               onClick={() => {
@@ -1124,7 +1122,7 @@ export const MapComponent: React.FC<MapComponentProps> = ({
               }`}
             >
               <span>🏝️ PNOA Ortofoto (IGN)</span>
-              <span className="text-[9px] text-emerald-400 font-mono">25cm/px</span>
+              <span className="text-[9px] text-cyan-400 font-mono">25cm</span>
             </button>
             <button
               onClick={() => {
@@ -1136,7 +1134,6 @@ export const MapComponent: React.FC<MapComponentProps> = ({
               }`}
             >
               <span>⚓ Esri Ocean Náutico</span>
-              <span className="text-[9px] text-emerald-400 font-mono">Libre</span>
             </button>
             <button
               onClick={() => {
@@ -1148,7 +1145,6 @@ export const MapComponent: React.FC<MapComponentProps> = ({
               }`}
             >
               <span>🌙 Esri Dark Nocturno</span>
-              <span className="text-[9px] text-emerald-400 font-mono">Libre</span>
             </button>
             <button
               onClick={() => {
@@ -1160,46 +1156,7 @@ export const MapComponent: React.FC<MapComponentProps> = ({
               }`}
             >
               <span>🗺️ OpenStreetMap</span>
-              <span className="text-[9px] text-emerald-400 font-mono">Libre</span>
             </button>
-
-            <div className="px-2 pt-2 pb-0.5 text-[10px] uppercase font-mono text-slate-400 font-bold border-t border-slate-800 flex items-center justify-between">
-              <span>Proveedores Opcionales</span>
-              <span className="text-slate-500 text-[9px]">Token/Key</span>
-            </div>
-            <button
-              onClick={() => {
-                updateBasemap('mapbox');
-                setShowBasemapMenu(false);
-              }}
-              className={`w-full text-left px-2 py-1.5 rounded transition flex items-center justify-between ${
-                currentBasemap === 'mapbox' ? 'bg-cyan-950 text-cyan-300 font-bold' : 'text-slate-300 hover:bg-slate-800'
-              }`}
-            >
-              <span>🌐 Mapbox Satélite</span>
-              <span className="text-[9px] font-mono text-cyan-400">
-                {getMapboxToken() ? 'Activo' : 'Fallback libre'}
-              </span>
-            </button>
-            <button
-              onClick={() => {
-                updateBasemap('maptiler');
-                setShowBasemapMenu(false);
-              }}
-              className={`w-full text-left px-2 py-1.5 rounded transition flex items-center justify-between ${
-                currentBasemap === 'maptiler' ? 'bg-cyan-950 text-cyan-300 font-bold' : 'text-slate-300 hover:bg-slate-800'
-              }`}
-            >
-              <span>🌊 MapTiler Híbrido</span>
-              <span className="text-[9px] font-mono text-cyan-400">
-                {getMaptilerKey() ? 'Activo' : 'Fallback libre'}
-              </span>
-            </button>
-
-            <div className="px-2 py-1.5 mt-1 rounded bg-slate-900/80 border border-slate-800 text-[10px] text-slate-400 leading-relaxed">
-              <span className="text-emerald-400 font-semibold block">✓ Sin marcas de agua:</span>
-              Leaflet y las capas principales (Esri World y PNOA Canarias) operan al 100% abiertas sin requerir clave.
-            </div>
           </div>
         )}
       </div>
