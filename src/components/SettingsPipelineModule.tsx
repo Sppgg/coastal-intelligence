@@ -194,6 +194,56 @@ export const SettingsPipelineModule: React.FC = () => {
         </div>
       </div>
 
+      {/* Section B.2: Arquitectura Leaflet & Proveedores de Teselas */}
+      <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-3">
+        <div className="flex items-center justify-between">
+          <div>
+            <h3 className="text-sm font-bold text-white flex items-center gap-2">
+              <Compass className="w-4 h-4 text-cyan-400" />
+              <span>Arquitectura de Leaflet & Proveedores de Teselas Cartográficas</span>
+            </h3>
+            <p className="text-xs text-slate-400 mt-0.5">
+              Estado de licencias, llaves de acceso y conexión con servicios de mapas satelitales
+            </p>
+          </div>
+          <span className="text-[10px] font-mono text-emerald-400 bg-emerald-950 px-2 py-0.5 rounded border border-emerald-800 font-bold">
+            Leaflet v1.9.4 &middot; Open-Source
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+          <div className="p-3 bg-slate-950 rounded-lg border border-slate-800 space-y-1.5">
+            <div className="flex items-center justify-between">
+              <span className="font-bold text-white">Leaflet Core Engine</span>
+              <span className="text-[10px] text-emerald-400 font-mono">Sin API Key</span>
+            </div>
+            <p className="text-[11px] text-slate-400 leading-normal">
+              Leaflet es una biblioteca JavaScript 100% libre (licencia BSD de 2 cláusulas) que <strong>no requiere ninguna API key propia</strong> para funcionar ni impone límites de inicialización.
+            </p>
+          </div>
+
+          <div className="p-3 bg-slate-950 rounded-lg border border-slate-800 space-y-1.5">
+            <div className="flex items-center justify-between">
+              <span className="font-bold text-white">Capas Base Abiertas</span>
+              <span className="text-[10px] text-emerald-400 font-mono">Operativas</span>
+            </div>
+            <p className="text-[11px] text-slate-400 leading-normal">
+              Proveedores por defecto 100% abiertos sin marcas de agua: <strong>Esri World Satélite</strong>, <strong>PNOA Ortofoto Canarias (IGN)</strong>, <strong>Esri Ocean Náutico</strong>, <strong>Esri Dark Nocturno</strong> y <strong>OpenStreetMap</strong>.
+            </p>
+          </div>
+
+          <div className="p-3 bg-slate-950 rounded-lg border border-slate-800 space-y-1.5">
+            <div className="flex items-center justify-between">
+              <span className="font-bold text-white">Proveedores Comerciales (.env)</span>
+              <span className="text-[10px] text-cyan-400 font-mono">Opcional</span>
+            </div>
+            <p className="text-[11px] text-slate-400 leading-normal">
+              Soporte integrado para tokens de Mapbox (<code className="text-cyan-300">VITE_MAPBOX_ACCESS_TOKEN</code>) o MapTiler (<code className="text-cyan-300">VITE_MAPTILER_API_KEY</code>) configurables en el archivo de entorno.
+            </p>
+          </div>
+        </div>
+      </div>
+
       {/* Section C: Reproducible Python Code & Script Runner */}
       <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-4">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-2">

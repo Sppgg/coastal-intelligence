@@ -204,7 +204,25 @@ if (typeof window !== 'undefined' && L) {
   }
 }
 
-type BasemapType = 'satellite' | 'nautical' | 'dark';
+type BasemapType = 'satellite' | 'pnoa' | 'nautical' | 'dark' | 'osm' | 'mapbox' | 'maptiler';
+
+const getMaptilerKey = (): string | null => {
+  const env = (import.meta as any).env || {};
+  const k = env.VITE_MAPTILER_API_KEY || env.MAPTILER_API_KEY || env.LEAFLET_API_KEY || env.VITE_LEAFLET_API_KEY || (typeof process !== 'undefined' ? (process.env?.VITE_MAPTILER_API_KEY || process.env?.MAPTILER_API_KEY || process.env?.LEAFLET_API_KEY) : '');
+  if (!k || typeof k !== 'string') return null;
+  const trimmed = k.trim();
+  if (!trimmed || trimmed === 'undefined' || trimmed === 'null' || trimmed.startsWith('MY_') || trimmed.length < 5) return null;
+  return trimmed;
+};
+
+const getMapboxToken = (): string | null => {
+  const env = (import.meta as any).env || {};
+  const k = env.VITE_MAPBOX_ACCESS_TOKEN || env.MAPBOX_ACCESS_TOKEN || env.MAPBOX_TOKEN || env.VITE_MAPBOX_TOKEN || (typeof process !== 'undefined' ? (process.env?.VITE_MAPBOX_ACCESS_TOKEN || process.env?.MAPBOX_ACCESS_TOKEN) : '');
+  if (!k || typeof k !== 'string') return null;
+  const trimmed = k.trim();
+  if (!trimmed || trimmed === 'undefined' || trimmed === 'null' || trimmed.startsWith('MY_') || trimmed.length < 10) return null;
+  return trimmed;
+};
 
 // Center coordinates for regions
 const REGION_COORDINATES: Record<IslandRegion, { center: [number, number]; zoom: number }> = {
@@ -305,29 +323,97 @@ export const MapComponent: React.FC<MapComponentProps> = ({
     }
 
     if (type === 'satellite') {
-      // Esri World Imagery (High-res marine and coastal satellite)
+      // Esri World Imagery (Alta resolución satelital) - 100% libre sin API key
       tileLayerRef.current = L.tileLayer(
         'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-        { maxZoom: 18, attribution: 'Esri, Maxar, Earthstar' }
+        { maxZoom: 18, attribution: 'Esri, Maxar, Earthstar Geographics' }
       ).addTo(map);
 
-      // Carto Labels on top for navigation
+      // Esri Boundaries and Places en superposición para navegación de toponimia costera (100% libre sin API key)
       labelsLayerRef.current = L.tileLayer(
-        'https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}{r}.png',
-        { subdomains: 'abcd', maxZoom: 18 }
+        'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
+        { maxZoom: 18, attribution: 'Esri Reference' }
+      ).addTo(map);
+    } else if (type === 'pnoa') {
+      // IGN España / GRAFCAN - Plan Nacional de Ortofotografía Aérea (PNOA Máxima Resolución 25cm/px Canarias) - 100% libre sin clave
+      tileLayerRef.current = L.tileLayer(
+        'https://www.ign.es/wmts/pnoa-ma?request=GetTile&service=WMTS&version=1.0.0&layer=OI.OrthoimageCoverage&style=default&format=image/jpeg&TileMatrixSet=GoogleMapsCompatible&TileMatrix={z}&TileRow={y}&TileCol={x}',
+        { maxZoom: 19, attribution: '© IGN España - PNOA / IDE Canarias' }
+      ).addTo(map);
+
+      // Esri Reference Labels libres sin clave
+      labelsLayerRef.current = L.tileLayer(
+        'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
+        { maxZoom: 19, attribution: 'Esri Reference' }
       ).addTo(map);
     } else if (type === 'nautical') {
-      // CartoDB Positron - crisp institutional nautical view
+      // Esri World Ocean Base - Cartografía oceanográfica oficial con batimetría y fondo marino (100% libre sin API key)
       tileLayerRef.current = L.tileLayer(
-        'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
-        { subdomains: 'abcd', maxZoom: 19, attribution: 'CARTO Voyager' }
+        'https://server.arcgisonline.com/ArcGIS/rest/services/Ocean/World_Ocean_Base/MapServer/tile/{z}/{y}/{x}',
+        { maxZoom: 16, attribution: 'Esri, GEBCO, NOAA, National Geographic' }
+      ).addTo(map);
+
+      // Esri Ocean Reference (batimetría, fosas marinas y nombres oceánicos)
+      labelsLayerRef.current = L.tileLayer(
+        'https://server.arcgisonline.com/ArcGIS/rest/services/Ocean/World_Ocean_Reference/MapServer/tile/{z}/{y}/{x}',
+        { maxZoom: 16 }
       ).addTo(map);
     } else if (type === 'dark') {
-      // CartoDB Dark Matter - night oceanographic view
+      // Esri Dark Gray Canvas Base - Modo oceanográfico nocturno (100% libre sin API key)
       tileLayerRef.current = L.tileLayer(
-        'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
-        { subdomains: 'abcd', maxZoom: 19, attribution: 'CARTO Dark' }
+        'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}',
+        { maxZoom: 16, attribution: 'Esri, HERE, Garmin, OpenStreetMap' }
       ).addTo(map);
+
+      // Esri Dark Gray Reference
+      labelsLayerRef.current = L.tileLayer(
+        'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}',
+        { maxZoom: 16 }
+      ).addTo(map);
+    } else if (type === 'osm') {
+      // OpenStreetMap Standard - 100% libre sin API key
+      tileLayerRef.current = L.tileLayer(
+        'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        { maxZoom: 19, attribution: '© OpenStreetMap contributors' }
+      ).addTo(map);
+    } else if (type === 'mapbox') {
+      const token = getMapboxToken();
+      if (token) {
+        tileLayerRef.current = L.tileLayer(
+          `https://api.mapbox.com/styles/v1/mapbox/satellite-streets-v12/tiles/{z}/{x}/{y}?access_token=${token}`,
+          { tileSize: 512, zoomOffset: -1, maxZoom: 20, attribution: '© Mapbox © OpenStreetMap' }
+        ).addTo(map);
+      } else {
+        // Fallback robusto a Esri World Imagery (abierto) para evitar fallos de renderizado
+        tileLayerRef.current = L.tileLayer(
+          'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+          { maxZoom: 18, attribution: 'Esri World Imagery (Activo: Mapbox token no configurado en entorno)' }
+        ).addTo(map);
+        labelsLayerRef.current = L.tileLayer(
+          'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
+          { maxZoom: 18 }
+        ).addTo(map);
+      }
+    } else if (type === 'maptiler') {
+      const key = getMaptilerKey();
+      if (key) {
+        // Solo solicitar MapTiler si existe una clave válida detectada en variables de entorno
+        tileLayerRef.current = L.tileLayer(
+          `https://api.maptiler.com/maps/hybrid/{z}/{x}/{y}.jpg?key=${key}`,
+          { tileSize: 512, zoomOffset: -1, maxZoom: 20, attribution: '© MapTiler © OpenStreetMap' }
+        ).addTo(map);
+      } else {
+        // Fallback inmediato a Esri World Imagery: NUNCA solicitar a api.maptiler.com sin clave,
+        // ya que MapTiler devuelve imágenes con la marca de agua "API key required"
+        tileLayerRef.current = L.tileLayer(
+          'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+          { maxZoom: 18, attribution: 'Esri World Imagery (Activo: MapTiler key no configurada en entorno)' }
+        ).addTo(map);
+        labelsLayerRef.current = L.tileLayer(
+          'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
+          { maxZoom: 18 }
+        ).addTo(map);
+      }
     }
 
     setCurrentBasemap(type);
@@ -1000,44 +1086,120 @@ export const MapComponent: React.FC<MapComponentProps> = ({
           title="Cambiar mapa base"
         >
           <MapIcon className="w-4 h-4 text-cyan-400" />
-          <span className="capitalize">{currentBasemap === 'satellite' ? 'Satélite' : currentBasemap === 'nautical' ? 'Náutico' : 'Nocturno'}</span>
+          <span className="capitalize">
+            {currentBasemap === 'satellite' ? 'Satélite Esri' :
+             currentBasemap === 'pnoa' ? 'PNOA Canarias' :
+             currentBasemap === 'nautical' ? 'Ocean Náutico' :
+             currentBasemap === 'dark' ? 'Nocturno Dark' :
+             currentBasemap === 'osm' ? 'OpenStreetMap' :
+             currentBasemap === 'mapbox' ? 'Mapbox' : 'MapTiler'}
+          </span>
         </button>
 
         {showBasemapMenu && (
-          <div className="mt-1.5 bg-slate-950/95 border border-slate-700 rounded-lg p-1.5 shadow-2xl space-y-1 text-xs backdrop-blur-md w-36">
+          <div className="mt-1.5 bg-slate-950/95 border border-slate-700 rounded-lg p-2 shadow-2xl space-y-1 text-xs backdrop-blur-md w-56">
+            <div className="px-2 py-1 text-[10px] uppercase font-mono text-slate-400 font-bold border-b border-slate-800 flex items-center justify-between">
+              <span>Capas Abiertas</span>
+              <span className="text-emerald-400 text-[9px]">Sin API Key</span>
+            </div>
             <button
               onClick={() => {
                 updateBasemap('satellite');
                 setShowBasemapMenu(false);
               }}
-              className={`w-full text-left px-2.5 py-1.5 rounded transition ${
+              className={`w-full text-left px-2 py-1.5 rounded transition flex items-center justify-between ${
                 currentBasemap === 'satellite' ? 'bg-cyan-950 text-cyan-300 font-bold' : 'text-slate-300 hover:bg-slate-800'
               }`}
             >
-              🛰️ Satélite HD
+              <span>🛰️ Esri World Satélite</span>
+              <span className="text-[9px] text-emerald-400 font-mono">Recomendado</span>
+            </button>
+            <button
+              onClick={() => {
+                updateBasemap('pnoa');
+                setShowBasemapMenu(false);
+              }}
+              className={`w-full text-left px-2 py-1.5 rounded transition flex items-center justify-between ${
+                currentBasemap === 'pnoa' ? 'bg-cyan-950 text-cyan-300 font-bold' : 'text-slate-300 hover:bg-slate-800'
+              }`}
+            >
+              <span>🏝️ PNOA Ortofoto (IGN)</span>
+              <span className="text-[9px] text-emerald-400 font-mono">25cm/px</span>
             </button>
             <button
               onClick={() => {
                 updateBasemap('nautical');
                 setShowBasemapMenu(false);
               }}
-              className={`w-full text-left px-2.5 py-1.5 rounded transition ${
+              className={`w-full text-left px-2 py-1.5 rounded transition flex items-center justify-between ${
                 currentBasemap === 'nautical' ? 'bg-cyan-950 text-cyan-300 font-bold' : 'text-slate-300 hover:bg-slate-800'
               }`}
             >
-              ⚓ Náutico Claro
+              <span>⚓ Esri Ocean Náutico</span>
+              <span className="text-[9px] text-emerald-400 font-mono">Libre</span>
             </button>
             <button
               onClick={() => {
                 updateBasemap('dark');
                 setShowBasemapMenu(false);
               }}
-              className={`w-full text-left px-2.5 py-1.5 rounded transition ${
+              className={`w-full text-left px-2 py-1.5 rounded transition flex items-center justify-between ${
                 currentBasemap === 'dark' ? 'bg-cyan-950 text-cyan-300 font-bold' : 'text-slate-300 hover:bg-slate-800'
               }`}
             >
-              🌙 Marino Oscuro
+              <span>🌙 Esri Dark Nocturno</span>
+              <span className="text-[9px] text-emerald-400 font-mono">Libre</span>
             </button>
+            <button
+              onClick={() => {
+                updateBasemap('osm');
+                setShowBasemapMenu(false);
+              }}
+              className={`w-full text-left px-2 py-1.5 rounded transition flex items-center justify-between ${
+                currentBasemap === 'osm' ? 'bg-cyan-950 text-cyan-300 font-bold' : 'text-slate-300 hover:bg-slate-800'
+              }`}
+            >
+              <span>🗺️ OpenStreetMap</span>
+              <span className="text-[9px] text-emerald-400 font-mono">Libre</span>
+            </button>
+
+            <div className="px-2 pt-2 pb-0.5 text-[10px] uppercase font-mono text-slate-400 font-bold border-t border-slate-800 flex items-center justify-between">
+              <span>Proveedores Opcionales</span>
+              <span className="text-slate-500 text-[9px]">Token/Key</span>
+            </div>
+            <button
+              onClick={() => {
+                updateBasemap('mapbox');
+                setShowBasemapMenu(false);
+              }}
+              className={`w-full text-left px-2 py-1.5 rounded transition flex items-center justify-between ${
+                currentBasemap === 'mapbox' ? 'bg-cyan-950 text-cyan-300 font-bold' : 'text-slate-300 hover:bg-slate-800'
+              }`}
+            >
+              <span>🌐 Mapbox Satélite</span>
+              <span className="text-[9px] font-mono text-cyan-400">
+                {getMapboxToken() ? 'Activo' : 'Fallback libre'}
+              </span>
+            </button>
+            <button
+              onClick={() => {
+                updateBasemap('maptiler');
+                setShowBasemapMenu(false);
+              }}
+              className={`w-full text-left px-2 py-1.5 rounded transition flex items-center justify-between ${
+                currentBasemap === 'maptiler' ? 'bg-cyan-950 text-cyan-300 font-bold' : 'text-slate-300 hover:bg-slate-800'
+              }`}
+            >
+              <span>🌊 MapTiler Híbrido</span>
+              <span className="text-[9px] font-mono text-cyan-400">
+                {getMaptilerKey() ? 'Activo' : 'Fallback libre'}
+              </span>
+            </button>
+
+            <div className="px-2 py-1.5 mt-1 rounded bg-slate-900/80 border border-slate-800 text-[10px] text-slate-400 leading-relaxed">
+              <span className="text-emerald-400 font-semibold block">✓ Sin marcas de agua:</span>
+              Leaflet y las capas principales (Esri World y PNOA Canarias) operan al 100% abiertas sin requerir clave.
+            </div>
           </div>
         )}
       </div>

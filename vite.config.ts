@@ -5,6 +5,11 @@ import {defineConfig} from 'vite';
 
 export default defineConfig(() => {
   return {
+    envPrefix: ['VITE_', 'LEAFLET_', 'MAPTILER_', 'MAPBOX_'],
+    define: {
+      'process.env.VITE_MAPTILER_API_KEY': JSON.stringify(process.env.VITE_MAPTILER_API_KEY || process.env.MAPTILER_API_KEY || process.env.LEAFLET_API_KEY || ''),
+      'process.env.VITE_MAPBOX_ACCESS_TOKEN': JSON.stringify(process.env.VITE_MAPBOX_ACCESS_TOKEN || process.env.MAPBOX_ACCESS_TOKEN || process.env.MAPBOX_TOKEN || ''),
+    },
     plugins: [react(), tailwindcss()],
     resolve: {
       alias: {
